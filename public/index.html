@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luna - AI Voice Chat</title>
+  <title>AI Voice Chat - Customize Your Companion</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
       <div class="header-left">
         <div class="avatar-container">
           <div class="avatar" id="avatar">
-            <span class="avatar-letter">L</span>
+            <span class="avatar-letter" id="avatarLetter">L</span>
           </div>
           <span class="status-dot" id="statusDot"></span>
         </div>
@@ -30,29 +30,150 @@
           <span class="mood-emoji" id="moodEmoji">😊</span>
           <span class="mood-text" id="moodText">Happy</span>
         </div>
+        <button class="btn-settings" id="btnSettings" title="Customize">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
       </div>
     </header>
 
     <!-- Chat Messages -->
     <main class="chat-container" id="chatContainer">
       <div class="chat-messages" id="chatMessages">
-        <!-- Welcome message -->
         <div class="date-divider">
           <span>Today</span>
         </div>
       </div>
     </main>
 
-    <!-- Voice Visualizer (shown during voice chat) -->
+    <!-- Voice Visualizer -->
     <div class="voice-visualizer" id="voiceVisualizer">
       <div class="visualizer-content">
         <div class="pulse-ring" id="pulseRing">
-          <div class="pulse-avatar">
-            <span>L</span>
+          <div class="pulse-avatar" id="pulseAvatar">
+            <span id="pulseAvatarLetter">L</span>
           </div>
         </div>
         <p class="visualizer-status" id="visualizerStatus">Listening...</p>
         <p class="live-transcript" id="liveTranscript"></p>
+      </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-overlay" id="settingsOverlay">
+      <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+          <h2>Customize Your Companion</h2>
+          <button class="btn-close-settings" id="btnCloseSettings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="settings-body" id="settingsBody">
+          <!-- Identity Section -->
+          <section class="settings-section">
+            <h3 class="section-title">Identity</h3>
+            <div class="form-group">
+              <label for="cfgName">Her Name</label>
+              <input type="text" id="cfgName" placeholder="Luna" maxlength="20">
+            </div>
+            <div class="form-group">
+              <label for="cfgUserNickname">She calls you...</label>
+              <input type="text" id="cfgUserNickname" placeholder="(optional) e.g. babe, my love" maxlength="30">
+            </div>
+          </section>
+
+          <!-- Personality Section -->
+          <section class="settings-section">
+            <h3 class="section-title">Personality</h3>
+            <div class="preset-grid" id="personalityGrid">
+              <!-- Filled by JS -->
+            </div>
+            <div class="form-group">
+              <label for="cfgCustomTraits">Custom Traits (optional)</label>
+              <input type="text" id="cfgCustomTraits" placeholder="e.g. nerdy, adventurous, mysterious">
+              <span class="form-hint">Overrides preset traits when set</span>
+            </div>
+          </section>
+
+          <!-- Backstory Section -->
+          <section class="settings-section">
+            <h3 class="section-title">Backstory</h3>
+            <div class="form-group">
+              <label for="cfgBackstory">Custom Backstory (optional)</label>
+              <textarea id="cfgBackstory" rows="3" placeholder="Write a custom backstory for her... e.g. She's an artist who loves rainy days and coffee shops."></textarea>
+              <span class="form-hint">Leave empty for auto-generated backstory</span>
+            </div>
+          </section>
+
+          <!-- Voice Section -->
+          <section class="settings-section">
+            <h3 class="section-title">Voice</h3>
+            <div class="voice-grid" id="voiceGrid">
+              <!-- Filled by JS -->
+            </div>
+            <div class="form-group">
+              <label for="cfgVoiceSpeed">Voice Speed</label>
+              <div class="range-wrap">
+                <input type="range" id="cfgVoiceSpeed" min="0.7" max="1.3" step="0.1" value="1.0">
+                <span class="range-value" id="voiceSpeedValue">1.0x</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Avatar Section -->
+          <section class="settings-section">
+            <h3 class="section-title">Avatar Color</h3>
+            <div class="color-grid" id="colorGrid">
+              <!-- Filled by JS -->
+            </div>
+          </section>
+
+          <!-- Communication Style -->
+          <section class="settings-section">
+            <h3 class="section-title">Communication Style</h3>
+            <div class="form-group">
+              <label>Language</label>
+              <div class="pill-grid" id="languageGrid">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Response Length</label>
+              <div class="pill-grid" id="responseLengthGrid">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Flirt Level</label>
+              <div class="pill-grid" id="flirtLevelGrid">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+          </section>
+
+          <!-- Interests Section -->
+          <section class="settings-section">
+            <h3 class="section-title">Her Interests</h3>
+            <div class="interests-grid" id="interestsGrid">
+              <!-- Filled by JS -->
+            </div>
+          </section>
+
+          <!-- Reset -->
+          <section class="settings-section settings-section-danger">
+            <button class="btn-reset-chat" id="btnResetChat">Reset Conversation</button>
+            <span class="form-hint">Clears chat history but keeps your settings</span>
+          </section>
+        </div>
+
+        <div class="settings-footer">
+          <button class="btn-save-settings" id="btnSaveSettings">Save Changes</button>
+        </div>
       </div>
     </div>
 

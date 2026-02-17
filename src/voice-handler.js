@@ -5,13 +5,13 @@ const os = require('os');
 const { v4: uuidv4 } = require('uuid');
 
 class VoiceHandler {
-  constructor() {
+  constructor(options = {}) {
     this.openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY
     });
-    this.ttsVoice = process.env.TTS_VOICE || 'nova';
+    this.ttsVoice = options.voice || process.env.TTS_VOICE || 'nova';
     this.ttsModel = process.env.TTS_MODEL || 'tts-1';
-    this.ttsSpeed = parseFloat(process.env.TTS_SPEED) || 1.0;
+    this.ttsSpeed = parseFloat(options.speed) || parseFloat(process.env.TTS_SPEED) || 1.0;
     this.sttModel = process.env.STT_MODEL || 'whisper-1';
   }
 
