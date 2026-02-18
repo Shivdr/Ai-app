@@ -6,8 +6,9 @@ const { v4: uuidv4 } = require('uuid');
 
 class VoiceHandler {
   constructor(options = {}) {
+    // Chat uses OpenRouter if available; TTS/STT always use OpenAI directly
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: process.env.OPENAI_API_KEY || process.env.OPENROUTER_API_KEY
     });
     this.ttsVoice = options.voice || process.env.TTS_VOICE || 'nova';
     this.ttsModel = process.env.TTS_MODEL || 'tts-1';

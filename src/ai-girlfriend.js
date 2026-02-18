@@ -95,7 +95,10 @@ class AIGirlfriend {
     this.maxHistory = parseInt(process.env.MAX_CONVERSATION_HISTORY) || 50;
 
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY,
+      baseURL: process.env.OPENROUTER_API_KEY
+        ? 'https://openrouter.ai/api/v1'
+        : undefined
     });
 
     this.systemPrompt = this._buildSystemPrompt();
